@@ -16,31 +16,31 @@ const firebaseApp = firebase.initializeApp(firebaseConfig)
 firebase.analytics();
 
 const db = firebaseApp.firestore()
-const userCollection = db.collection('user')
+const sightCollection = db.collection('sights')
 
-export const createUser = user => {
-    return userCollection.add(user)
+export const createSight = user => {
+    return sightCollection.add(user)
 }
 
-export const getUser = async id => {
-    const user = await userCollection.doc(id).get()
-    return user.exists
-        ? user.data()
+export const getSight = async id => {
+    const sight = await sightCollection.doc(id).get()
+    return sight.exists
+        ? sight.data()
         : null
 }
 
-export const updateUser = (id, user) => {
-    return userCollection.doc(id)
+export const updateSight = (id, user) => {
+    return sightCollection.doc(id)
         .update(user)
 }
 
-export const deleteUser = id => {
-    return userCollection.doc(id).delete()
+export const deleteSight = id => {
+    return sightCollection.doc(id).delete()
 }
 
-export const useLoadUsers = () => {
+export const useLoadSights = () => {
     const users = ref([])
-    const close = userCollection.onSnapshot(snapshot => {
+    const close = sightCollection.onSnapshot(snapshot => {
         users.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     })
     onUnmounted(close)
