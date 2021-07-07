@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import Play from '../views/Play.vue'
 
+import DashboardHome from '../views/dashboard/Home.vue'
 
 const routes = [
     {
@@ -13,6 +14,11 @@ const routes = [
         path: '/play',
         name: 'Play',
         component: Play
+    },
+    {
+        path: '/dashboard/home',
+        name: 'Dashboard Home',
+        component: DashboardHome
     },
 ]
 const router = createRouter({
