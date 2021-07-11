@@ -15,6 +15,7 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 firebase.analytics();
 
+
 const db = firebaseApp.firestore()
 const userCollection = db.collection('user')
 
