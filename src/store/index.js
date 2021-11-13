@@ -21,6 +21,7 @@ export const store = {
             localStorage.removeItem('token')
         },
         isInSession() {
+            if (store.state.googleUser.id === null) return false;
             const headers = new Headers();
             headers.append("Content-Type", "application/x-www-form-urlencoded");
 

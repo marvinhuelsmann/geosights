@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import Play from '../views/Play.vue'
+import Finish from '../views/Finished.vue'
 
 import DashboardHome from '../views/dashboard/Home.vue'
 
@@ -14,6 +15,11 @@ const routes = [
         path: '/play',
         name: 'Play',
         component: Play
+    },
+    {
+        path: '/finish',
+        name: 'Finish',
+        component: Finish
     },
     {
         path: '/dashboard/home',

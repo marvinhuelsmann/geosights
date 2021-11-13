@@ -1,4 +1,8 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/app';
+import 'firebase/analytics';
+import 'firebase/auth';        // for authentication
+import 'firebase/firestore';   // for cloud firestore
 import {ref, onUnmounted} from "vue";
 
 const firebaseConfig = {
@@ -11,22 +15,31 @@ const firebaseConfig = {
     measurementId: "G-N0XGRPG4HK"
 };
 
+
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 firebase.analytics();
 
 
 const db = firebaseApp.firestore()
-const sightCollection = db.collection('sights')
+export const sightCollection = db.collection('sights')
+export const gameStatisticCollection = db.collection('statistics')
 
-export const createSight = user => {
-    return sightCollection.add(user)
+export const createGameStatistic = user => {
+    return gameStatisticCollection.add(user)
 }
 
 export const getSight = async id => {
     const sight = await sightCollection.doc(id).get()
     return sight.exists
         ? sight.data()
+        : null
+}
+
+export const getStatistic = async id => {
+    const allUserStatistic = await gameStatisticCollection.doc(id).get()
+    return allUserStatistic.exists
+        ? allUserStatistic.data()
         : null
 }
 
@@ -40,11 +53,23 @@ export const deleteSight = id => {
 }
 
 export const useLoadSights = () => {
+    // eslint-disable-next-line no-unused-vars
+    let count = 0;
     const users = ref([])
     const close = sightCollection.onSnapshot(snapshot => {
-        users.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            users.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+            users.value = users.value.splice(0, 6)
     })
     onUnmounted(close)
     return users
 }
 
+export const getRandomSight = () => {
+    const user = ref([])
+    const close = sightCollection.onSnapshot(snapshot => {
+        const allSights = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        user.value = allSights[Math.floor(Math.random() * allSights.length)]
+    })
+    onUnmounted(close)
+    return user
+}
