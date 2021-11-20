@@ -12,6 +12,18 @@ let activePoints = 0
 /* default size: 8 */
 let maxSights = 8
 
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 const mathRandomSight = () => {
     const user = ref([])
     const close = sightCollection.onSnapshot(snapshot => {
@@ -19,7 +31,7 @@ const mathRandomSight = () => {
             {id: doc.id, ...doc.data()}))
 
         /*  */
-        allSights = allSights.splice(0, maxSights)
+        allSights = shuffle(allSights).splice(0, maxSights)
 
         /* Removing sights that are already have been seen */
         const namesToDeleteSet = new Set(alreadySee);
@@ -30,7 +42,7 @@ const mathRandomSight = () => {
 
 
         /* Check if all sights have been seen */
-        if (Object.keys(filterSights).length !== 0) {
+        if (alreadySee.length < maxSights) {
             /* Getting new sight */
             user.value = filterSights[Math.floor(Math.random() * filterSights.length)]
             console.log(user.value)
